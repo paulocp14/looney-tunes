@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:looney_tunes/shared/widgets/custon_drawer.dart';
-import 'package:looney_tunes/view/pagina1.dart';
 import 'package:looney_tunes/view/pagina2.dart';
 import 'package:looney_tunes/view/pagina3.dart';
+
+import 'card_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -34,7 +35,7 @@ class _MainPageState extends State<MainPage> {
                   });
                 },
                 children: const [
-                  Pagina1(),
+                  CardPage(),
                   Pagina2(),
                   Pagina3(),
                 ],

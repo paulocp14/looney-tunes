@@ -110,7 +110,7 @@ class _DadosoCadastraisPageState extends State<DadosoCadastraisPage> {
                   DropdownButton(
                       value: anosdeExperiencia,
                       isExpanded: true,
-                      items: [
+                      items: const [
                         DropdownMenuItem(
                           child: Text("1"),
                           value: 0,
