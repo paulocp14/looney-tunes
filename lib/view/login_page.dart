@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: 40,
+                    height: 20,
                   ),
                   Row(
                     children: [
@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   const SizedBox(
-                    height: 50,
+                    height: 20,
                   ),
                   const Text(
                     "Seja o proximo LooNey ",
@@ -68,12 +68,12 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.white70),
                   ),
                   const SizedBox(
-                    height: 40,
+                    height: 20,
                   ),
                   Container(
                     width: double.infinity,
                     margin: const EdgeInsets.symmetric(horizontal: 30),
-                    height: 30,
+                    height: 20,
                     alignment: Alignment.center,
                     child: TextField(
                       controller: emailController,

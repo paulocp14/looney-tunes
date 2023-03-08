@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:looney_tunes/view/login_page.dart';
+import 'package:looney_tunes/view/numeros_aleatorios/numeros_aleatorios_hive_page.dart';
 
+import '../../view/configuracoes/configuracoes_hive_page.dart';
 import '../../view/dados_cadastrais.dart';
 
 class CustonDrawer extends StatelessWidget {
@@ -107,8 +109,28 @@ class CustonDrawer extends StatelessWidget {
                     });
               },
             ),
+            const Divider(),
             const SizedBox(
-              height: 15,
+              height: 10,
+            ),
+            InkWell(
+              child: const Row(
+                children: [
+                  Icon(Icons.numbers),
+                  Text("Gerador de Numero"),
+                ],
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (bc) => const NumerosAleatoriosHivePage()));
+              },
+            ),
+            const Divider(),
+            const SizedBox(
+              height: 10,
             ),
             InkWell(
               child: const Row(
@@ -117,7 +139,13 @@ class CustonDrawer extends StatelessWidget {
                   Text("Configurações"),
                 ],
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (bc) => const ConfiguracoesHivePage()));
+              },
             ),
             const Divider(),
             const SizedBox(

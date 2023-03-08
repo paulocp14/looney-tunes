@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:looney_tunes/repositories/nivel_repository.dart';
-
+import 'package:looney_tunes/services/app_storage_services.dart';
 import '../repositories/linguagens_repository.dart';
 import '../shared/widgets/text_label.dart';
 
@@ -21,18 +21,50 @@ class _DadosoCadastraisPageState extends State<DadosoCadastraisPage> {
   var linguagensRepository = LinguagensRepository();
   var niveis = [];
   var linguagens = [];
-  var linguagensSelecionadas = [];
+  List<String> linguagensSelecionadas = [];
   var nivelSelecionado = "";
   double salarioEscolhido = 0;
   int anosdeExperiencia = 0;
+
+  AppStorigeService storage = AppStorigeService();
+
+  final String CHAVE_DADOS_CADASTRAIS_NOME = "CHAVE_DADOS_CADASTRAIS_NOME";
+
+  final String CHAVE_DADOS_CADASTRAIS_DATA_NASCIMNETO =
+      "CHAVE_DADOS_CADASTRAIS_DATA_NASCIMNETO";
+  final String CHAVE_DADOS_CADASTRAIS_EXPERIENCIA =
+      "CHAVE_DADOS_CADASTRAIS_EXPERIENCIA";
+  final String CHAVE_DADOS_CADASTRAIS_LINGUAGEM =
+      "CHAVE_DADOS_CADASTRAIS_LINGUAGEM";
+  final String CHAVE_DADOS_CADASTRAIS_TEMPO_EXPERIENCIA =
+      "CHAVE_DADOS_CADASTRAIS_TEMPO_EXPERIENCIA";
+  final String CHAVE_DADOS_CADASTRAIS_SALARIO =
+      "CHAVE_DADOS_CADASTRAIS_SALARIO";
 
   bool salvando = false;
 
   @override
   void initState() {
-    super.initState();
     niveis = nivelRepository.retornaNiveis();
     linguagens = linguagensRepository.retornaLinguagens();
+    super.initState();
+    carregarDados();
+  }
+
+  carregarDados() async {
+    nomeController.text = await storage.getDadosCadastraisNome();
+    dataNascimentoController.text =
+        await storage.getDadosCadstraisDataNascimento(
+            CHAVE_DADOS_CADASTRAIS_DATA_NASCIMNETO);
+    if (dataNascimentoController.text.isNotEmpty) {
+      dataNascimento = DateTime.parse(dataNascimentoController.text);
+    }
+    nivelSelecionado = await storage.getDadosCadstraisDataNivelExperiencia(
+        CHAVE_DADOS_CADASTRAIS_TEMPO_EXPERIENCIA);
+    linguagensSelecionadas = await storage.getDadosCadstraisLinguagens();
+    anosdeExperiencia = await storage.getDadosCadstraisTempoexperiencia();
+    salarioEscolhido = await storage.getDadosCadstraisSalario();
+    setState(() {});
   }
 
   @override
@@ -142,7 +174,7 @@ class _DadosoCadastraisPageState extends State<DadosoCadastraisPage> {
                         });
                       }),
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       setState(() {
                         salvando = false;
                       });
@@ -184,6 +216,18 @@ class _DadosoCadastraisPageState extends State<DadosoCadastraisPage> {
                                 content: Text("Prentenção salarial")));
                         return;
                       }
+
+                      await storage.setDadosCadastraisNome(nomeController.text);
+                      await storage.setDadosCadstraisDataNascimento(
+                          dataNascimento.toString());
+                      await storage.setDadosCadstraisDataNivelExperiencia(
+                          nivelSelecionado);
+                      await storage
+                          .setDadosCadstraisLinguagens(linguagensSelecionadas);
+                      await storage
+                          .setDadosCadstraisTempoexperiencia(anosdeExperiencia);
+                      await storage.setDadosCadstraisSalario(salarioEscolhido);
+
                       setState(() {
                         salvando = true;
                       });

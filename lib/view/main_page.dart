@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:looney_tunes/shared/widgets/custon_drawer.dart';
-import 'package:looney_tunes/view/pagina2.dart';
-import 'package:looney_tunes/view/pagina3.dart';
+import 'package:looney_tunes/view/images_assets.dart';
+import 'package:looney_tunes/view/list_view.dart';
+import 'package:looney_tunes/view/list_view_horizantal.dart';
 
 import 'card_page.dart';
+import 'nova_tarefa_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -36,12 +38,15 @@ class _MainPageState extends State<MainPage> {
                 },
                 children: const [
                   CardPage(),
-                  Pagina2(),
-                  Pagina3(),
+                  ImagesAssetsPage(),
+                  ListViewPage(),
+                  ListViewHorizontal(),
+                  TarefaPage(),
                 ],
               ),
             ),
             BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
               onTap: (value) {
                 controller.jumpToPage(value);
               },
@@ -52,6 +57,9 @@ class _MainPageState extends State<MainPage> {
                     label: "Adicionar", icon: Icon(Icons.add)),
                 BottomNavigationBarItem(
                     label: "Menu", icon: Icon(Icons.person)),
+                BottomNavigationBarItem(
+                    label: "Page4", icon: Icon(Icons.image)),
+                BottomNavigationBarItem(label: "Page5", icon: Icon(Icons.list)),
               ],
             ),
           ],
