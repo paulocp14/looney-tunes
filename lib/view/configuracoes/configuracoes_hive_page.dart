@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:looney_tunes/services/app_storage_services.dart';
+import 'package:looney_tunes/model/configuracoes_model.dart';
+import 'package:looney_tunes/repositories/configuracoes_repository.dart';
 
 class ConfiguracoesHivePage extends StatefulWidget {
   const ConfiguracoesHivePage({super.key});
@@ -9,15 +10,11 @@ class ConfiguracoesHivePage extends StatefulWidget {
 }
 
 class _ConfiguracoesHivePageState extends State<ConfiguracoesHivePage> {
-  AppStorigeService storage = AppStorigeService();
+  late ConfiguracoesRepository configuracoesRepository;
+  ConfiguracoesModel configuracoesModel = ConfiguracoesModel.vazio();
 
   TextEditingController nomeUsuarioController = TextEditingController();
   TextEditingController alturaController = TextEditingController();
-
-  String? nomeUsuario;
-  double? altura;
-  bool receberNotificacoes = false;
-  bool temaEscuro = false;
 
   @override
   void initState() {
@@ -26,12 +23,10 @@ class _ConfiguracoesHivePageState extends State<ConfiguracoesHivePage> {
   }
 
   carregarDados() async {
-    nomeUsuarioController.text = await storage.getDadosCadastraisNomeUsuario();
-    alturaController.text =
-        (await (storage.getDadosCadastraisChaveAltura("").toString()));
-    receberNotificacoes = await storage.getDadosCadstraisNotificacoes();
-    temaEscuro = await storage.getDadosCadstraisTema();
-
+    configuracoesRepository = await ConfiguracoesRepository.carregar();
+    configuracoesModel = configuracoesRepository.obterDados();
+    nomeUsuarioController.text = configuracoesModel.nomeUsuario;
+    alturaController.text = configuracoesModel.altura.toString();
     setState(() {});
   }
 
@@ -60,25 +55,24 @@ class _ConfiguracoesHivePageState extends State<ConfiguracoesHivePage> {
           title: const Text("Receber Notificações"),
           onChanged: (bool value) {
             setState(() {
-              receberNotificacoes = !receberNotificacoes;
+              configuracoesModel.receberNotificacoes = value;
             });
           },
-          value: receberNotificacoes,
+          value: configuracoesModel.receberNotificacoes,
         ),
         SwitchListTile(
             title: const Text("Tema Escuro"),
-            value: temaEscuro,
+            value: configuracoesModel.temaEscuro,
             onChanged: (bool value) {
               setState(() {
-                temaEscuro = value;
+                configuracoesModel.temaEscuro = value;
               });
             }),
         TextButton(
             onPressed: () async {
               FocusManager.instance.primaryFocus?.unfocus();
               try {
-                await storage.setDadosCadastraisChaveAltura(
-                    double.parse(alturaController.text));
+                configuracoesModel.altura = double.parse(alturaController.text);
               } catch (e) {
                 showDialog(
                     context: context,
@@ -98,11 +92,9 @@ class _ConfiguracoesHivePageState extends State<ConfiguracoesHivePage> {
                     });
                 return;
               }
-              await storage
-                  .setDadosCadastraisNomeUsuario(nomeUsuarioController.text);
-              await storage.setDadosCadstraisNotificacoes(receberNotificacoes);
-              await storage.setDadosCadstraisTema(temaEscuro);
+              configuracoesModel.nomeUsuario = nomeUsuarioController.text;
               Navigator.pop(context);
+              configuracoesRepository.salvar(configuracoesModel);
             },
             child: const Text("Salvar")),
       ]),

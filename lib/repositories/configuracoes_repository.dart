@@ -1,16 +1,39 @@
 import 'package:hive/hive.dart';
+import 'package:looney_tunes/model/configuracoes_model.dart';
 
 class ConfiguracoesRepository {
-  static late Box box;
+  static late Box _box;
 
   ConfiguracoesRepository._criar();
 
   static Future<ConfiguracoesRepository> carregar() async {
     if (Hive.isBoxOpen("configuracoes")) {
-      box = Hive.box("configuracoes");
+      _box = Hive.box("configuracoes");
     } else {
-      box = await Hive.openBox('configuracoes');
+      _box = await Hive.openBox('configuracoes');
     }
     return ConfiguracoesRepository._criar();
+  }
+
+  void salvar(ConfiguracoesModel configuracoesModel) {
+    _box.put("configuracoesModel", {
+      "nomeUsuario": configuracoesModel.nomeUsuario,
+      "altura": configuracoesModel.altura,
+      "receberNotificacoes": configuracoesModel.receberNotificacoes,
+      "temaEscuro": configuracoesModel.temaEscuro,
+    });
+  }
+
+  ConfiguracoesModel obterDados() {
+    var configuracoes = _box.get("configuracoes");
+    if (configuracoes == null) {
+      return ConfiguracoesModel.vazio();
+    }
+    return ConfiguracoesModel(
+      configuracoes["nomeUsuario"],
+      configuracoes["altura"],
+      configuracoes["receberNotificacoes"],
+      configuracoes["temaEscuro"],
+    );
   }
 }

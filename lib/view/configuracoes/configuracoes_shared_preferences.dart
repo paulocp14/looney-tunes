@@ -30,7 +30,7 @@ class _ConfiguracoesSharedPreferencesPageState
   carregarDados() async {
     nomeUsuarioController.text = await storage.getDadosCadastraisNomeUsuario();
     alturaController.text =
-        (await (storage.getDadosCadastraisChaveAltura("").toString()));
+        ((storage.getDadosCadastraisChaveAltura("").toString()));
     receberNotificacoes = await storage.getDadosCadstraisNotificacoes();
     temaEscuro = await storage.getDadosCadstraisTema();
 

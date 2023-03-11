@@ -3,6 +3,8 @@ import 'package:hive/hive.dart';
 import 'my_app.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
+void debugprint(String s) {}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var documentsDirectory =
